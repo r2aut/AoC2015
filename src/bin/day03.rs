@@ -1,0 +1,150 @@
+//! Day 3: Perfectly Spherical Houses in a Vacuum
+//!
+//! <https://adventofcode.com/2015/day/3>
+
+use aoc2015::{P1, P2};
+use colored::Colorize;
+use std::collections::HashSet;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+
+#[derive(Debug, Default, PartialEq, Eq, Clone, Copy, Hash)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+impl Point {
+    fn new() -> Self {
+        Self { x: 0, y: 0 }
+    }
+}
+
+enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST,
+}
+
+#[derive(Default, Debug)]
+struct Runner {
+    pos: Point,
+    trace: Vec<Point>,
+}
+
+impl Runner {
+    fn new() -> Self {
+        Self {
+            pos: Point::new(),
+            trace: vec![Point::new()],
+        }
+    }
+
+    fn step(&mut self, dir: &Direction) {
+        let pos = self.pos;
+        self.pos = match dir {
+            Direction::NORTH => Point { x: pos.x, y: pos.y + 1 },
+            Direction::EAST => Point { x: pos.x + 1, y: pos.y },
+            Direction::SOUTH => Point { x: pos.x, y: pos.y - 1 },
+            Direction::WEST => Point { x: pos.x - 1, y: pos.y },
+        };
+        self.trace.push(self.pos.clone());
+    }
+
+    fn unique_points(&self) -> HashSet<&Point> {
+        HashSet::from_iter(&self.trace)
+    }
+}
+
+/// Translate and execute instruction in char form
+fn step_runner(runner: &mut Runner, ch: char) {
+    let dir: Option<Direction> = match ch {
+        '^' => Some(Direction::NORTH),
+        '>' => Some(Direction::EAST),
+        'v' => Some(Direction::SOUTH),
+        '<' => Some(Direction::WEST),
+        _ => None,
+    };
+    if let Some(d) = dir {
+        runner.step(&d);
+    } else {
+        eprint!("Wrong input symbol {}", ch);
+    }
+}
+
+/// Solution for part one
+fn part_one(instructions: &str) -> i32 {
+    let mut runner = Runner::new();
+    for ch in instructions.chars() {
+        step_runner(&mut runner, ch);
+    }
+    runner.unique_points().iter().count() as i32
+}
+
+/// Solution for part two
+fn part_two(instructions: &str) -> i32 {
+    // Process Santa movings
+    let santa_instructions = instructions
+        .to_string()
+        .chars()
+        .enumerate()
+        .filter(|(pos, _)| pos % 2 == 0)
+        .map(|(_, ch)| ch)
+        .collect::<Vec<char>>();
+    let mut santa = Runner::new();
+    for ch in santa_instructions {
+        step_runner(&mut santa, ch);
+    }
+    // Process robot movings
+    let robot_instructions = instructions
+        .to_string()
+        .chars()
+        .enumerate()
+        .filter(|(pos, _)| pos % 2 == 1)
+        .map(|(_, ch)| ch)
+        .collect::<Vec<char>>();
+    let mut robot = Runner::new();
+    for ch in robot_instructions {
+        step_runner(&mut robot, ch);
+    }
+    // Unite sets of visited places and count them
+    santa.unique_points().union(&robot.unique_points()).count() as i32
+}
+
+fn main() {
+    let file_name = "puzzles/day03.txt";
+    let file = File::open(file_name).unwrap();
+    let mut reader = BufReader::new(file);
+    let mut buffer = String::new();
+    if let Ok(_) = reader.read_line(&mut buffer) {
+        let instructions = buffer.trim();
+
+        // Solve part one
+        let res_1 = part_one(instructions);
+        println!("{} At least one present got {} children", P1.green(), res_1.to_string().green());
+
+        // Solve part two
+        let res_2 = part_two(instructions);
+        println!("{} At least one present got {} children", P2.green(), res_2.to_string().green());
+    } else {
+        panic!("Cannot read input line")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_part_one() {
+        assert_eq!(part_one(">"), 2);
+        assert_eq!(part_one("^>v<"), 4);
+        assert_eq!(part_one("^v^v^v^v^v"), 2);
+    }
+    #[test]
+    fn test_part_two() {
+        assert_eq!(part_two("^v"), 3);
+        assert_eq!(part_two("^>v<"), 3);
+        assert_eq!(part_two("^v^v^v^v^v"), 11);
+    }
+}

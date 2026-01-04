@@ -12,3 +12,4 @@ Tasks of the Advent of Code 2015:
 - Day 4: The Ideal Stocking Stuffer
 - Day 5: Doesn't He Have Intern-Elves For This?
 - Day 6: Probably a Fire Hazard
+- Day 10: Elves Look, Elves Say

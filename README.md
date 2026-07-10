@@ -13,5 +13,6 @@ Tasks of the Advent of Code 2015:
 - Day 5: Doesn't He Have Intern-Elves For This?
 - Day 6: Probably a Fire Hazard
 - Day 7: Some Assembly Required
+- Day 8: Matchsticks
 - Day 9: All in a Single Night
 - Day 10: Elves Look, Elves Say

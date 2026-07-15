@@ -16,3 +16,4 @@ Tasks of the Advent of Code 2015:
 - Day 8: Matchsticks
 - Day 9: All in a Single Night
 - Day 10: Elves Look, Elves Say
+- Day 11: Corporate Policy

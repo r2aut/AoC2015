@@ -84,7 +84,7 @@ fn read_city_distances(file_name: &str) -> Cities {
 fn part_one(cities: &Cities) -> Option<u32> {
     cities
         .cities()
-        .into_iter()
+        .iter()
         .permutations(cities.all_cities.len())
         .map(|v| cities.distance(v))
         .min()

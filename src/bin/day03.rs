@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/3>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use std::collections::HashSet;
@@ -20,10 +21,10 @@ impl Point {
 }
 
 enum Direction {
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST,
+    North,
+    East,
+    South,
+    West,
 }
 
 #[derive(Default, Debug)]
@@ -43,12 +44,12 @@ impl Runner {
     fn step(&mut self, dir: &Direction) {
         let pos = self.pos;
         self.pos = match dir {
-            Direction::NORTH => Point { x: pos.x, y: pos.y + 1 },
-            Direction::EAST => Point { x: pos.x + 1, y: pos.y },
-            Direction::SOUTH => Point { x: pos.x, y: pos.y - 1 },
-            Direction::WEST => Point { x: pos.x - 1, y: pos.y },
+            Direction::North => Point { x: pos.x, y: pos.y + 1 },
+            Direction::East => Point { x: pos.x + 1, y: pos.y },
+            Direction::South => Point { x: pos.x, y: pos.y - 1 },
+            Direction::West => Point { x: pos.x - 1, y: pos.y },
         };
-        self.trace.push(self.pos.clone());
+        self.trace.push(self.pos);
     }
 
     fn unique_points(&self) -> HashSet<&Point> {
@@ -59,10 +60,10 @@ impl Runner {
 /// Translate and execute instruction in char form
 fn step_runner(runner: &mut Runner, ch: char) {
     let dir: Option<Direction> = match ch {
-        '^' => Some(Direction::NORTH),
-        '>' => Some(Direction::EAST),
-        'v' => Some(Direction::SOUTH),
-        '<' => Some(Direction::WEST),
+        '^' => Some(Direction::North),
+        '>' => Some(Direction::East),
+        'v' => Some(Direction::South),
+        '<' => Some(Direction::West),
         _ => None,
     };
     if let Some(d) = dir {
@@ -78,7 +79,7 @@ fn part_one(instructions: &str) -> i32 {
     for ch in instructions.chars() {
         step_runner(&mut runner, ch);
     }
-    runner.unique_points().iter().count() as i32
+    runner.unique_points().len() as i32
 }
 
 /// Solution for part two
@@ -111,24 +112,23 @@ fn part_two(instructions: &str) -> i32 {
     santa.unique_points().union(&robot.unique_points()).count() as i32
 }
 
-fn main() {
+fn main() -> Result<()> {
     let file_name = "puzzles/day03.txt";
     let file = File::open(file_name).unwrap();
     let mut reader = BufReader::new(file);
     let mut buffer = String::new();
-    if let Ok(_) = reader.read_line(&mut buffer) {
-        let instructions = buffer.trim();
+    reader.read_line(&mut buffer)?;
+    let instructions = buffer.trim();
 
-        // Solve part one
-        let res_1 = part_one(instructions);
-        println!("{} At least one present got {} children", P1.green(), res_1.to_string().green());
+    // Solve part one
+    let res_1 = part_one(instructions);
+    println!("{} At least one present got {} children", P1.green(), res_1.to_string().green());
 
-        // Solve part two
-        let res_2 = part_two(instructions);
-        println!("{} At least one present got {} children", P2.green(), res_2.to_string().green());
-    } else {
-        panic!("Cannot read input line")
-    }
+    // Solve part two
+    let res_2 = part_two(instructions);
+    println!("{} At least one present got {} children", P2.green(), res_2.to_string().green());
+
+    Ok(())
 }
 
 #[cfg(test)]

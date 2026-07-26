@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/6>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use std::cmp::{max, min};
@@ -177,7 +178,7 @@ struct Instruction {
 }
 
 /// Read instructions from file
-fn read_instructions(file_name: &str) -> Vec<Instruction> {
+fn read_instructions(file_name: &str) -> Result<Vec<Instruction>> {
     use regex::Regex;
     let pattern = r"(\D*) (\d*),(\d*) through (\d*),(\d*)";
     let re = Regex::new(pattern).unwrap();
@@ -186,24 +187,21 @@ fn read_instructions(file_name: &str) -> Vec<Instruction> {
     let file = std::fs::File::open(file_name).unwrap();
     let reader = std::io::BufReader::new(file);
     for line in reader.lines() {
-        if let Ok(line) = line {
-            let caps = re.captures(&line).unwrap();
-            instructions.push(Instruction {
-                cmd: caps[1].to_string(),
-                from_pos: Position {
-                    x: caps[2].parse::<usize>().unwrap(),
-                    y: caps[3].parse::<usize>().unwrap(),
-                },
-                to_pos: Position {
-                    x: caps[4].parse::<usize>().unwrap(),
-                    y: caps[5].parse::<usize>().unwrap(),
-                },
-            });
-
-            // println!("{}", &caps[1]);
-        }
+        let line = line?;
+        let caps = re.captures(&line).unwrap();
+        instructions.push(Instruction {
+            cmd: caps[1].to_string(),
+            from_pos: Position {
+                x: caps[2].parse::<usize>().unwrap(),
+                y: caps[3].parse::<usize>().unwrap(),
+            },
+            to_pos: Position {
+                x: caps[4].parse::<usize>().unwrap(),
+                y: caps[5].parse::<usize>().unwrap(),
+            },
+        });
     }
-    instructions
+    Ok(instructions)
 }
 
 /// Part One solution
@@ -232,9 +230,9 @@ fn part_two(screen: &mut Screen, instructions: &Vec<Instruction>) -> u32 {
     screen.get_total_brightness()
 }
 
-fn main() {
+fn main() -> Result<()> {
     let file_name = r"puzzles/day06.txt";
-    let instructions = read_instructions(file_name);
+    let instructions = read_instructions(file_name)?;
 
     let mut screen1 = Screen::new(1000);
     let res_1 = part_one(&mut screen1, &instructions);
@@ -243,6 +241,8 @@ fn main() {
     let mut screen2 = Screen::new(1000);
     let res_2 = part_two(&mut screen2, &instructions);
     println!("{} The total brightness is {}", P2.green(), res_2.to_string().green()); // 15343601
+
+    Ok(())
 }
 
 /// Tests

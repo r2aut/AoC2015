@@ -30,7 +30,7 @@ impl AdventCoin {
         format!("{:x}", digest)
     }
     fn is_coin(&self, number: u32) -> bool {
-        &self.digest(number)[0..self.zero_num] == self.zero_mask_
+        self.digest(number)[0..self.zero_num] == self.zero_mask_
     }
 }
 

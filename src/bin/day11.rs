@@ -35,11 +35,7 @@ impl Password {
     /// Rule 2
     /// Passwords may not contain the letters i, o, or l
     fn rule2(&self) -> bool {
-        if self.0.contains('i') || self.0.contains('o') || self.0.contains('l') {
-            false
-        } else {
-            true
-        }
+        !(self.0.contains('i') || self.0.contains('o') || self.0.contains('l'))
     }
     /// Rule 3
     /// Passwords must contain at least two different, non-overlapping pairs of letters
@@ -95,7 +91,7 @@ impl Password {
         while !self.is_valid() {
             self.next_pretender();
         }
-        Ok(&self.value())
+        Ok(self.value())
     }
 }
 
@@ -103,7 +99,7 @@ impl Password {
 fn read_init_password(reader: &mut impl BufRead) -> Result<Password, AoCError> {
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
-    Ok(Password::new(&buf.trim()))
+    Ok(Password::new(buf.trim()))
 }
 
 fn main() -> Result<(), AoCError> {
@@ -120,7 +116,6 @@ fn main() -> Result<(), AoCError> {
 }
 
 #[cfg(test)]
-
 mod test {
     use super::*;
 

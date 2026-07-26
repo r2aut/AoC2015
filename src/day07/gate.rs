@@ -195,12 +195,11 @@ impl DirectGate {
 }
 impl Gate for DirectGate {
     fn calculate(&self) -> Signal {
-        let inp_signal = match &self.input {
+        match &self.input {
             InputField::Wire(rw) => rw.get(),
             InputField::Value(s) => *s,
             InputField::None => Signal::default(),
-        };
-        inp_signal
+        }
     }
     fn get_output(&self) -> Option<RefWire> {
         self.output.clone()

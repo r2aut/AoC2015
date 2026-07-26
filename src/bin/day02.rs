@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/2>
 
+use anyhow::{Ok, Result};
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use itertools::Itertools;
@@ -30,22 +31,21 @@ impl Present {
     }
 }
 
-fn read_data(path: &str) -> Vec<Present> {
+fn read_data(path: &str) -> Result<Vec<Present>> {
     let file = File::open(path).unwrap();
     let reader = BufReader::new(file);
     let re = Regex::new(r"(\d*)x(\d*)x(\d*)").unwrap();
     let mut result: Vec<Present> = Vec::new();
     for line_ in reader.lines() {
-        if let Ok(line) = line_ {
-            let caps = re.captures(&line).unwrap();
-            let c1 = caps[1].parse::<i32>().unwrap();
-            let c2 = caps[2].parse::<i32>().unwrap();
-            let c3 = caps[3].parse::<i32>().unwrap();
-            let present = Present { dims: vec![c1, c2, c3] };
-            result.push(present);
-        }
+        let line = line_?;
+        let caps = re.captures(&line).unwrap();
+        let c1 = caps[1].parse::<i32>().unwrap();
+        let c2 = caps[2].parse::<i32>().unwrap();
+        let c3 = caps[3].parse::<i32>().unwrap();
+        let present = Present { dims: vec![c1, c2, c3] };
+        result.push(present);
     }
-    result
+    Ok(result)
 }
 
 fn part_one(data: &Vec<Present>) -> i32 {
@@ -70,10 +70,11 @@ fn part_two(data: &Vec<Present>) -> i32 {
     counter
 }
 
-fn main() {
-    let data = read_data(r"puzzles/day02.txt");
+fn main() -> Result<()> {
+    let data = read_data(r"puzzles/day02.txt")?;
     println!("{} The total square of paper is {}", P1.green(), part_one(&data).to_string().green());
     println!("{} The total length of ribbon is {}", P2.green(), part_two(&data).to_string().green());
+    Ok(())
 }
 
 #[cfg(test)]

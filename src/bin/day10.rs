@@ -74,9 +74,9 @@ fn main() {
     let file_name = r"puzzles/day10.txt";
     let starting_item = read_starting_value(file_name);
 
-    let res_1 = look_and_say_with_starting_item(&starting_item).into_iter().nth(40).unwrap();
+    let res_1 = look_and_say_with_starting_item(&starting_item).nth(40).unwrap();
     println!("{} The length of the result is {}", P1.green(), res_1.len().to_string().green());
 
-    let res_2 = look_and_say_with_starting_item(&starting_item).into_iter().nth(50).unwrap();
+    let res_2 = look_and_say_with_starting_item(&starting_item).nth(50).unwrap();
     println!("{} The length of the result is {}", P2.green(), res_2.len().to_string().green());
 }

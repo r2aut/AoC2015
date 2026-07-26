@@ -8,6 +8,7 @@ license = "Unlicense"
 keywords = ["AoC", "AoC2015"]
 
 [dependencies]
+anyhow = "1.0.104"
 colored = "3.0.0"
 itertools = "0.14.0"
 md5 = "0.8.0"

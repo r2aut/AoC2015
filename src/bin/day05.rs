@@ -84,21 +84,21 @@ fn read_data(file_name: &str) -> Vec<String> {
 }
 
 // Solution for Part One
-fn part_1(data: &Vec<String>) -> u32 {
-    data.iter().filter(|s| is_nice_1(&s)).collect::<Vec<&String>>().len() as u32
+fn part_1(data: &[String]) -> u32 {
+    data.iter().filter(|s| is_nice_1(s)).collect::<Vec<&String>>().len() as u32
 }
 
 // Solution for Part Two
-fn part_2(data: &Vec<String>) -> u32 {
-    data.iter().filter(|s| is_nice_2(&s)).collect::<Vec<&String>>().len() as u32
+fn part_2(data: &[String]) -> u32 {
+    data.iter().filter(|s| is_nice_2(s)).collect::<Vec<&String>>().len() as u32
 }
 
 fn main() {
     let file_name = "puzzles/day05.txt";
     let data = &read_data(file_name);
-    let res_1 = part_1(&data);
+    let res_1 = part_1(data);
     println!("{} There are {} nice strings.", P1.green(), res_1.to_string().green());
-    let res_2 = part_2(&data);
+    let res_2 = part_2(data);
     println!("{} There are {} nice strings.", P2.green(), res_2.to_string().green());
 }
 

@@ -69,14 +69,13 @@ pub fn read_circuit(reader: impl BufRead) -> Circuit {
             let output = Some(circuit.wires.get(&output_str).clone());
 
             // construct Gate according to command
-            let gate: Box<dyn Gate>;
-            match command_str.as_str() {
-                "AND" => gate = Box::new(AndGate::new(input1, input2, output)),
-                "OR" => gate = Box::new(OrGate::new(input1, input2, output)),
-                "LSHIFT" => gate = Box::new(LShiftGate::new(input1, input2, output)),
-                "RSHIFT" => gate = Box::new(RShiftGate::new(input1, input2, output)),
+            let gate: Box<dyn Gate> = match command_str.as_str() {
+                "AND" => Box::new(AndGate::new(input1, input2, output)),
+                "OR" => Box::new(OrGate::new(input1, input2, output)),
+                "LSHIFT" => Box::new(LShiftGate::new(input1, input2, output)),
+                "RSHIFT" => Box::new(RShiftGate::new(input1, input2, output)),
                 _ => panic!("Unknown input string: {}", line),
-            }
+            };
 
             // save gate to circuit
             circuit.gates.push(gate);
@@ -104,13 +103,13 @@ pub fn read_circuit(reader: impl BufRead) -> Circuit {
             }
 
             let output_str = cap[2].to_string();
-            let output = Some(circuit.wires.get(&output_str).clone());
+            let output = circuit.wires.get(&output_str).clone();
 
             if let InputField::Wire(_) = input {
-                let gate = Box::new(DirectGate::new(input, output));
+                let gate = Box::new(DirectGate::new(input, Some(output)));
                 circuit.gates.push(gate);
             } else if let InputField::Value(v) = input {
-                output.unwrap().set(v);
+                output.set(v);
             }
         } else {
             panic!("Unknown input string: {}", line)

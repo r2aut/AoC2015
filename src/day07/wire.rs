@@ -18,6 +18,7 @@ pub type Signal = u16;
 pub type RefWire = Rc<Cell<Signal>>;
 
 /// All wires mentioned in the input file
+#[derive(Default)]
 pub struct Wires {
     wires: HashMap<String, RefWire>,
 }
@@ -33,7 +34,7 @@ impl Wires {
     }
     /// Reset all wires to 0
     pub fn reset_all(&mut self) {
-        for (_, v) in &mut self.wires {
+        for v in &mut self.wires.values() {
             v.set(Signal::default());
         }
     }

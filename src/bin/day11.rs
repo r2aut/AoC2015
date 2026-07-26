@@ -2,14 +2,14 @@
 //!
 //! <https://adventofcode.com/2015/day/11>
 
+use anyhow::Result;
+use aoc2015::{P1, P2};
+use colored::Colorize;
 use std::{
     fs::File,
     io::{BufRead, BufReader},
     path::Path,
 };
-
-use aoc2015::{P1, P2, errors::AoCError};
-use colored::Colorize;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 struct Password(String);
@@ -83,10 +83,12 @@ impl Password {
             password_bytes.push(b'a');
         }
         password_bytes.reverse();
-        self.0 = String::from_utf8(password_bytes).unwrap();
+        if let Ok(res) = String::from_utf8(password_bytes) {
+            self.0 = res;
+        }
     }
     /// Get next valid password
-    fn next_password(&mut self) -> Result<&str, AoCError> {
+    fn next_password(&mut self) -> Result<&str> {
         self.next_pretender();
         while !self.is_valid() {
             self.next_pretender();
@@ -96,13 +98,13 @@ impl Password {
 }
 
 /// Read initial password from the file
-fn read_init_password(reader: &mut impl BufRead) -> Result<Password, AoCError> {
+fn read_init_password(reader: &mut impl BufRead) -> Result<Password> {
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     Ok(Password::new(buf.trim()))
 }
 
-fn main() -> Result<(), AoCError> {
+fn main() -> Result<()> {
     let path = Path::new("puzzles/day11.txt");
     let file = File::open(path)?;
     let mut reader = BufReader::new(file);

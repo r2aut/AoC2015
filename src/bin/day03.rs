@@ -114,7 +114,7 @@ fn part_two(instructions: &str) -> i32 {
 
 fn main() -> Result<()> {
     let file_name = "puzzles/day03.txt";
-    let file = File::open(file_name).unwrap();
+    let file = File::open(file_name)?;
     let mut reader = BufReader::new(file);
     let mut buffer = String::new();
     reader.read_line(&mut buffer)?;

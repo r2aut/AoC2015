@@ -2,11 +2,11 @@
 //!
 //! <https://adventofcode.com/2015/day/1>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
+use colored::Colorize;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-
-use colored::Colorize;
 
 pub fn go_to_finish(instructions: &str) -> i32 {
     let mut floor = 0;
@@ -41,11 +41,11 @@ fn go_to_basement(instructions: &str) -> Option<i32> {
     Some(step)
 }
 
-fn main() {
-    let file = File::open("puzzles/day01.txt").unwrap();
+fn main() -> Result<()> {
+    let file = File::open("puzzles/day01.txt")?;
     let mut reader = BufReader::new(file);
     let mut line = String::new();
-    if reader.read_line(&mut line).unwrap() > 0 {
+    if reader.read_line(&mut line)? > 0 {
         let instructions = line.trim();
 
         let r1 = go_to_finish(instructions);
@@ -58,6 +58,7 @@ fn main() {
             print!("{} Santa didn't enter the basement.", P2.green())
         }
     }
+    Ok(())
 }
 
 #[cfg(test)]

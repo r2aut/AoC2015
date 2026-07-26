@@ -1,6 +1,7 @@
 use super::gate::{AndGate, DirectGate, Gate, InputField, LShiftGate, NotGate, OrGate, RShiftGate};
 use super::wire::Wires;
 use crate::day07::wire::Signal;
+use anyhow::Result;
 use regex::Regex;
 use std::io::BufRead;
 
@@ -32,15 +33,15 @@ impl Circuit {
 }
 
 /// Read circuit from file
-pub fn read_circuit(reader: impl BufRead) -> Circuit {
+pub fn read_circuit(reader: impl BufRead) -> Result<Circuit> {
     let mut circuit = Circuit::new();
 
-    let pattern_and_or_shift = Regex::new(r"(\w+) (\w+) (\w+) -> (\w+)").unwrap();
-    let pattern_direct = Regex::new(r"(\w+) -> (\w+)").unwrap();
-    let pattern_not = Regex::new(r"NOT (\w+) -> (\w+)").unwrap();
+    let pattern_and_or_shift = Regex::new(r"(\w+) (\w+) (\w+) -> (\w+)")?;
+    let pattern_direct = Regex::new(r"(\w+) -> (\w+)")?;
+    let pattern_not = Regex::new(r"NOT (\w+) -> (\w+)")?;
 
     for line in reader.lines() {
-        let line = line.unwrap();
+        let line = line?;
         // commands AND, OR, LSHIFT and RSHIFT
         if let Some(cap) = pattern_and_or_shift.captures(&line) {
             // get input1
@@ -115,5 +116,5 @@ pub fn read_circuit(reader: impl BufRead) -> Circuit {
             panic!("Unknown input string: {}", line)
         }
     }
-    circuit
+    Ok(circuit)
 }

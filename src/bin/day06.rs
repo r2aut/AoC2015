@@ -2,7 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/6>
 
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use std::cmp::{max, min};
@@ -157,7 +157,7 @@ impl Display for Screen {
                         0 => '.',
                         1..9 => {
                             let cccc = ch + '0' as u32;
-                            std::char::from_u32(cccc).unwrap()
+                            if let Some(res) = std::char::from_u32(cccc) { res } else { unreachable!() }
                         }
                         _ => '#',
                     }
@@ -181,23 +181,23 @@ struct Instruction {
 fn read_instructions(file_name: &str) -> Result<Vec<Instruction>> {
     use regex::Regex;
     let pattern = r"(\D*) (\d*),(\d*) through (\d*),(\d*)";
-    let re = Regex::new(pattern).unwrap();
+    let re = Regex::new(pattern)?;
 
     let mut instructions = Vec::<Instruction>::new();
-    let file = std::fs::File::open(file_name).unwrap();
+    let file = std::fs::File::open(file_name)?;
     let reader = std::io::BufReader::new(file);
     for line in reader.lines() {
         let line = line?;
-        let caps = re.captures(&line).unwrap();
+        let caps = re.captures(&line).ok_or(anyhow!("Nothing found"))?;
         instructions.push(Instruction {
             cmd: caps[1].to_string(),
             from_pos: Position {
-                x: caps[2].parse::<usize>().unwrap(),
-                y: caps[3].parse::<usize>().unwrap(),
+                x: caps[2].parse::<usize>()?,
+                y: caps[3].parse::<usize>()?,
             },
             to_pos: Position {
-                x: caps[4].parse::<usize>().unwrap(),
-                y: caps[5].parse::<usize>().unwrap(),
+                x: caps[4].parse::<usize>()?,
+                y: caps[5].parse::<usize>()?,
             },
         });
     }

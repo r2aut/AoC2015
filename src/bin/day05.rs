@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/5>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use itertools::Itertools;
@@ -77,10 +78,10 @@ fn is_nice_2(string: &str) -> bool {
 }
 
 // Read strings from the file
-fn read_data(file_name: &str) -> Vec<String> {
-    let file = std::fs::File::open(file_name).unwrap();
+fn read_data(file_name: &str) -> Result<Vec<String>> {
+    let file = std::fs::File::open(file_name)?;
     let reader = std::io::BufReader::new(file);
-    reader.lines().map(|r| if let Ok(res) = r { res } else { panic!() }).collect()
+    Ok(reader.lines().map(|r| if let Ok(res) = r { res } else { panic!() }).collect())
 }
 
 // Solution for Part One
@@ -93,13 +94,14 @@ fn part_2(data: &[String]) -> u32 {
     data.iter().filter(|s| is_nice_2(s)).collect::<Vec<&String>>().len() as u32
 }
 
-fn main() {
+fn main() -> Result<()> {
     let file_name = "puzzles/day05.txt";
-    let data = &read_data(file_name);
+    let data = &read_data(file_name)?;
     let res_1 = part_1(data);
     println!("{} There are {} nice strings.", P1.green(), res_1.to_string().green());
     let res_2 = part_2(data);
     println!("{} There are {} nice strings.", P2.green(), res_2.to_string().green());
+    Ok(())
 }
 
 #[cfg(test)]

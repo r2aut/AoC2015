@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/4>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use std::io::BufRead;
@@ -46,12 +47,12 @@ impl Iterator for AdventCoin {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     let file_name = "puzzles/day04.txt";
-    let file = std::fs::File::open(file_name).unwrap();
+    let file = std::fs::File::open(file_name)?;
     let mut reader = std::io::BufReader::new(file);
     let mut buf = String::new();
-    reader.read_line(&mut buf).unwrap();
+    reader.read_line(&mut buf)?;
     let line = buf.trim();
     let secret_key = line;
 
@@ -59,13 +60,21 @@ fn main() {
 
     let coin = AdventCoin::new_coin(secret_key, 5);
     let mut it = coin.into_iter();
-    let res = it.next().unwrap();
-    println!("{} The first secret key for 5-zero coins is {}", P1.green(), res.to_string().green());
+    if let Some(res) = it.next() {
+        println!("{} The first secret key for 5-zero coins is {}", P1.green(), res.to_string().green());
+    } else {
+        println!("{} - No result", P1.blue())
+    }
 
     let coin = AdventCoin::new_coin(secret_key, 6);
     let mut it = coin.into_iter();
-    let res = it.next().unwrap();
-    println!("{} The first secret key for 6-zero coins is {}", P2.green(), res.to_string().green());
+    if let Some(res) = it.next() {
+        println!("{} The first secret key for 6-zero coins is {}", P2.green(), res.to_string().green());
+    } else {
+        println!("{} - No result", P1.blue())
+    }
+
+    Ok(())
 }
 
 #[cfg(test)]

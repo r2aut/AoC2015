@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/8>
 
+use anyhow::Result;
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use std::{
@@ -35,8 +36,16 @@ fn squize_string(inp: &[u8]) -> Vec<u8> {
                     pos += 2;
                 }
                 b'x' => {
-                    let d0 = (inp[pos + 2] as char).to_digit(16).unwrap();
-                    let d1 = (inp[pos + 3] as char).to_digit(16).unwrap();
+                    let d0 = if let Some(res) = (inp[pos + 2] as char).to_digit(16) {
+                        res
+                    } else {
+                        unreachable!();
+                    };
+                    let d1 = if let Some(res) = (inp[pos + 3] as char).to_digit(16) {
+                        res
+                    } else {
+                        unreachable!();
+                    };
                     let dr = d0 * 16 + d1;
                     res.push(dr as u8);
                     pos += 4;
@@ -101,26 +110,28 @@ fn part_two(svec: &Vec<Vec<u8>>) -> u32 {
 }
 
 /// Read lines from file
-fn read_lines(reader: impl BufRead) -> Vec<Vec<u8>> {
+fn read_lines(reader: impl BufRead) -> Result<Vec<Vec<u8>>> {
     let mut res: Vec<Vec<u8>> = Vec::new();
     for line in reader.lines() {
-        let bytes_line = line.unwrap().into_bytes();
+        let bytes_line = line?.into_bytes();
         res.push(bytes_line);
     }
-    res
+    Ok(res)
 }
 
-fn main() {
+fn main() -> Result<()> {
     let path = Path::new("puzzles/day08.txt");
-    let file = File::open(path).unwrap();
+    let file = File::open(path)?;
     let reader = BufReader::new(file);
-    let sss = read_lines(reader);
+    let sss = read_lines(reader)?;
 
     let res_1 = part_one(&sss);
     println!("{} {}", P1.blue(), res_1.to_string().green());
 
     let res_2 = part_two(&sss);
     println!("{} {}", P2.blue(), res_2.to_string().green());
+
+    Ok(())
 }
 
 #[cfg(test)]
@@ -138,17 +149,17 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let sss = read_lines(TEST_DATA.as_bytes());
+        let sss = read_lines(TEST_DATA.as_bytes()).unwrap();
         assert_eq!(part_one(&sss), 12)
     }
     #[test]
     fn test_part_one_1() {
-        let sss = read_lines(TEST_DATA1.as_bytes());
+        let sss = read_lines(TEST_DATA1.as_bytes()).unwrap();
         assert_eq!(part_one(&sss), 10)
     }
     #[test]
     fn test_part_two() {
-        let sss = read_lines(TEST_DATA.as_bytes());
+        let sss = read_lines(TEST_DATA.as_bytes()).unwrap();
         assert_eq!(part_two(&sss), 19)
     }
 }

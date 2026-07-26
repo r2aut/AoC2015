@@ -32,18 +32,19 @@ impl Present {
 }
 
 fn read_data(path: &str) -> Result<Vec<Present>> {
-    let file = File::open(path).unwrap();
+    let file = File::open(path)?;
     let reader = BufReader::new(file);
-    let re = Regex::new(r"(\d*)x(\d*)x(\d*)").unwrap();
+    let re = Regex::new(r"(\d*)x(\d*)x(\d*)")?;
     let mut result: Vec<Present> = Vec::new();
     for line_ in reader.lines() {
         let line = line_?;
-        let caps = re.captures(&line).unwrap();
-        let c1 = caps[1].parse::<i32>().unwrap();
-        let c2 = caps[2].parse::<i32>().unwrap();
-        let c3 = caps[3].parse::<i32>().unwrap();
-        let present = Present { dims: vec![c1, c2, c3] };
-        result.push(present);
+        if let Some(caps) = re.captures(&line) {
+            let c1 = caps[1].parse::<i32>()?;
+            let c2 = caps[2].parse::<i32>()?;
+            let c3 = caps[3].parse::<i32>()?;
+            let present = Present { dims: vec![c1, c2, c3] };
+            result.push(present);
+        }
     }
     Ok(result)
 }
@@ -53,8 +54,9 @@ fn part_one(data: &Vec<Present>) -> i32 {
     for present in data {
         let present_sqares = present.squares();
         let square_sum = present_sqares.iter().sum::<i32>() * 2;
-        let min_square = present_sqares.iter().min().unwrap();
-        counter += square_sum + min_square;
+        if let Some(min_square) = present_sqares.iter().min() {
+            counter += square_sum + min_square;
+        }
     }
     counter
 }
@@ -63,9 +65,10 @@ fn part_two(data: &Vec<Present>) -> i32 {
     let mut counter = 0;
     for present in data {
         let present_perimeters = present.perimeters();
-        let min_perimetr = present_perimeters.iter().min().unwrap();
-        let volume = present.volume();
-        counter += min_perimetr + volume;
+        if let Some(min_perimetr) = present_perimeters.iter().min() {
+            let volume = present.volume();
+            counter += min_perimetr + volume;
+        }
     }
     counter
 }

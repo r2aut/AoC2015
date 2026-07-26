@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/7>
 
+use anyhow::Result;
 use aoc2015::day07::{
     circuit::{Circuit, read_circuit},
     wire::Signal,
@@ -26,16 +27,17 @@ fn part_two(circut: &mut Circuit, value: Signal) -> Signal {
     circut.wires.get("a").get()
 }
 
-fn main() {
+fn main() -> Result<()> {
     let path = Path::new("puzzles/day07.txt");
-    let file = File::open(path).unwrap();
+    let file = File::open(path)?;
     let reader = BufReader::new(file);
-    let mut circut = read_circuit(reader);
+    let mut circut = read_circuit(reader)?;
 
     let res_1 = part_one(&mut circut);
     println!("{} {}", P1.blue(), res_1.to_string().green());
     let res_2 = part_two(&mut circut, res_1);
     println!("{} {}", P2.blue(), res_2.to_string().green());
+    Ok(())
 }
 
 #[cfg(test)]
@@ -55,7 +57,7 @@ NOT y -> i
 ";
     #[test]
     fn test_day07() {
-        let mut circut = read_circuit(TEST_DATA.as_bytes());
+        let mut circut = read_circuit(TEST_DATA.as_bytes()).unwrap();
         assert_eq!(part_one(&mut circut), 0);
         assert_eq!(circut.wires.get("d").get(), 72);
         assert_eq!(circut.wires.get("e").get(), 507);

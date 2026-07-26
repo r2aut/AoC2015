@@ -2,11 +2,11 @@
 //!
 //! <https://adventofcode.com/2015/day/10>
 
-use std::io::BufRead;
-
+use anyhow::{Result, anyhow};
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use itertools::Itertools;
+use std::io::BufRead;
 
 /// Look and Say sequence (A005150)
 struct LookAndSay {
@@ -62,21 +62,23 @@ fn look_and_say_with_starting_item(value: &str) -> LookAndSay {
 }
 
 /// Read starting value from file
-fn read_starting_value(file_name: &str) -> String {
-    let file = std::fs::File::open(file_name).unwrap();
+fn read_starting_value(file_name: &str) -> Result<String> {
+    let file = std::fs::File::open(file_name)?;
     let mut reader = std::io::BufReader::new(file);
     let mut buf = String::new();
-    reader.read_line(&mut buf).unwrap();
-    buf.trim_end().to_string()
+    reader.read_line(&mut buf)?;
+    Ok(buf.trim_end().to_string())
 }
 
-fn main() {
+fn main() -> Result<()> {
     let file_name = r"puzzles/day10.txt";
-    let starting_item = read_starting_value(file_name);
+    let starting_item = read_starting_value(file_name)?;
 
-    let res_1 = look_and_say_with_starting_item(&starting_item).nth(40).unwrap();
+    let res_1 = look_and_say_with_starting_item(&starting_item).nth(40).ok_or(anyhow!("Cannot fild"))?;
     println!("{} The length of the result is {}", P1.green(), res_1.len().to_string().green());
 
-    let res_2 = look_and_say_with_starting_item(&starting_item).nth(50).unwrap();
+    let res_2 = look_and_say_with_starting_item(&starting_item).nth(50).ok_or(anyhow!("Cannot fild"))?;
     println!("{} The length of the result is {}", P2.green(), res_2.len().to_string().green());
+
+    Ok(())
 }

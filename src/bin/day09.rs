@@ -2,6 +2,7 @@
 //!
 //! <https://adventofcode.com/2015/day/9>
 
+use anyhow::{Result, anyhow};
 use aoc2015::{P1, P2};
 use colored::Colorize;
 use itertools::Itertools;
@@ -36,8 +37,16 @@ impl Cities {
     fn add_distance(&mut self, city1: &str, city2: &str, dist: u32) {
         self.add_city(city1);
         self.add_city(city2);
-        let c1 = self.all_cities.iter().find(|i| **i == city1).unwrap().clone();
-        let c2 = self.all_cities.iter().find(|i| **i == city2).unwrap().clone();
+        let c1 = if let Some(res) = self.all_cities.iter().find(|i| **i == city1) {
+            res.clone()
+        } else {
+            unreachable!()
+        };
+        let c2 = if let Some(res) = self.all_cities.iter().find(|i| **i == city2) {
+            res.clone()
+        } else {
+            unreachable!()
+        };
 
         let cc = (c1, c2);
         self.all_distances.entry(cc).insert_entry(dist);
@@ -61,23 +70,23 @@ impl Cities {
 }
 
 /// Read data from file
-fn read_city_distances(file_name: &str) -> Cities {
+fn read_city_distances(file_name: &str) -> Result<Cities> {
     let mut res = Cities::new();
 
     // pattern for "London to Dublin = 464"
-    let pattern = Regex::new(r"(\w*) to (\w*) = (\d*)").unwrap();
+    let pattern = Regex::new(r"(\w*) to (\w*) = (\d*)")?;
 
-    let file = File::open(file_name).unwrap();
+    let file = File::open(file_name)?;
     let reader = BufReader::new(file);
     for line in reader.lines() {
-        let line = line.unwrap();
-        let cap = pattern.captures(&line).unwrap();
+        let line = line?;
+        let cap = pattern.captures(&line).ok_or(anyhow!("Cannot find anything"))?;
         let city1 = &cap[1];
         let city2 = &cap[2];
-        let dist: u32 = cap[3].parse().unwrap();
+        let dist: u32 = cap[3].parse()?;
         res.add_distance(city1, city2, dist);
     }
-    res
+    Ok(res)
 }
 
 /// Solution for part one
@@ -102,14 +111,22 @@ fn part_two(cities: &Cities) -> Option<u32> {
         .flatten()
 }
 
-fn main() {
-    let cities = read_city_distances(r"puzzles/day09.txt");
+fn main() -> Result<()> {
+    let cities = read_city_distances(r"puzzles/day09.txt")?;
 
-    let res_1 = part_one(&cities).unwrap();
-    println!("{} The sortest distance is {}", P1.green(), res_1.to_string().green());
+    if let Some(res_1) = part_one(&cities) {
+        println!("{} The sortest distance is {}", P1.green(), res_1.to_string().green());
+    } else {
+        println!("{} Unknown result", P1.blue());
+    }
 
-    let res_2 = part_two(&cities).unwrap();
-    println!("{} The longest distance is {}", P2.green(), res_2.to_string().green());
+    if let Some(res_2) = part_two(&cities) {
+        println!("{} The longest distance is {}", P2.green(), res_2.to_string().green());
+    } else {
+        println!("{} Unknown result", P2.blue());
+    }
+
+    Ok(())
 }
 
 #[cfg(test)]

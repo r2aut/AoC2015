@@ -12,8 +12,11 @@ anyhow = "1.0.104"
 colored = "3.0.0"
 itertools = "0.14.0"
 md5 = "0.8.0"
+rand = "0.10.2"
 regex = "1.12.2"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 
 [lints.clippy]
 unwrap_used = "deny" # Запретить unwrap
-expect_used = "warn" # Запретить expect
+#expect_used = "warn" # Запретить expect

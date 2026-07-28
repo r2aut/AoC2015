@@ -6,4 +6,5 @@ pub const P1: &str = "Part One = ";
 pub const P2: &str = "Part Two = ";
 
 pub mod day07;
+pub mod day22;
 pub mod errors;

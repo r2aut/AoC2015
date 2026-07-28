@@ -17,3 +17,4 @@ Tasks of the Advent of Code 2015:
 - Day 9: All in a Single Night
 - Day 10: Elves Look, Elves Say
 - Day 11: Corporate Policy
+- Day 22: Wizard Simulator 20XX

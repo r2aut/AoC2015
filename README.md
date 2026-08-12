@@ -19,3 +19,4 @@ Tasks of the Advent of Code 2015:
 - Day 11: Corporate Policy
 - Day 22: Wizard Simulator 20XX
 - Day 24: It Hangs in the Balance
+- Day 25: Let It Snow

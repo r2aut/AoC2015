@@ -14,6 +14,7 @@ itertools = "0.14.0"
 md5 = "0.8.0"
 rand = "0.10.2"
 regex = "1.12.2"
+serde_json = "1.0.151"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 

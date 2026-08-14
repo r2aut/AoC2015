@@ -17,6 +17,7 @@ Tasks of the Advent of Code 2015:
 - Day 9: All in a Single Night
 - Day 10: Elves Look, Elves Say
 - Day 11: Corporate Policy
+- Day 12: JSAbacusFramework.io
 - Day 22: Wizard Simulator 20XX
 - Day 24: It Hangs in the Balance
 - Day 25: Let It Snow

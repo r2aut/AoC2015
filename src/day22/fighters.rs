@@ -6,7 +6,8 @@ use crate::day22::magic::{ALL_MAGIC, Magic};
 use rand::seq::IteratorRandom;
 use std::collections::HashSet;
 use std::mem::discriminant;
-use tracing::debug;
+// use tracing::debug;
+use log::debug;
 
 /// Player implementation
 #[derive(Debug, PartialEq, Eq, Clone, Hash)]
@@ -20,14 +21,7 @@ pub struct Player {
 }
 impl Player {
     pub fn new(hit_points: i32, mana: i32) -> Self {
-        Self {
-            hit_points,
-            mana,
-            armor: 0,
-            magic: ALL_MAGIC.to_vec(),
-            effects: Vec::new(),
-            spent_mana: 0,
-        }
+        Self { hit_points, mana, armor: 0, magic: ALL_MAGIC.to_vec(), effects: Vec::new(), spent_mana: 0 }
     }
     pub fn is_alive(&self) -> bool {
         self.hit_points > 0
@@ -39,10 +33,7 @@ impl Player {
     {
         debug!("");
         debug!("-- Player turn --");
-        debug!(
-            "- Player has {} hit points, {} armor, {} mana",
-            self.hit_points, self.armor, self.mana
-        );
+        debug!("- Player has {} hit points, {} armor, {} mana", self.hit_points, self.armor, self.mana);
         debug!("- Boss has {} hit points", boss.hit_points);
 
         // part two varisnt (hard = true)
@@ -81,11 +72,7 @@ impl Player {
 
         for effect in &mut self.effects {
             match effect {
-                Magic::Shield {
-                    rearmoring,
-                    duration,
-                    ..
-                } => {
+                Magic::Shield { rearmoring, duration, .. } => {
                     self.armor = *rearmoring;
                     *duration -= 1;
                     debug!("Shield's timer is now {}", duration);
@@ -93,10 +80,7 @@ impl Player {
                 Magic::Recharge { mana, duration, .. } => {
                     self.mana += *mana;
                     *duration -= 1;
-                    debug!(
-                        "Recharge provides {} mana; its timer is now {}",
-                        mana, duration
-                    );
+                    debug!("Recharge provides {} mana; its timer is now {}", mana, duration);
                 }
                 _ => unreachable!(),
             }
@@ -118,23 +102,14 @@ impl Player {
                 boss.get_damage(damage);
                 debug!("Player casts Magic Missile, dealing {} damage", damage);
             }
-            Magic::Drain {
-                cost,
-                damage,
-                healing,
-            } => {
+            Magic::Drain { cost, damage, healing } => {
                 self.mana -= cost;
                 self.spent_mana += cost;
                 boss.get_damage(damage);
                 self.hit_points += healing;
-                debug!(
-                    "Player casts Drain, dealing {} damage, and healing {} hit points",
-                    damage, healing
-                );
+                debug!("Player casts Drain, dealing {} damage, and healing {} hit points", damage, healing);
             }
-            Magic::Shield {
-                cost, rearmoring, ..
-            } => {
+            Magic::Shield { cost, rearmoring, .. } => {
                 self.mana -= cost;
                 self.spent_mana += cost;
                 self.effects.push(magic);
@@ -196,11 +171,7 @@ pub struct Boss {
 }
 impl Boss {
     pub fn new(hit_points: i32, damage: i32) -> Self {
-        Self {
-            hit_points,
-            damage,
-            effects: Vec::new(),
-        }
+        Self { hit_points, damage, effects: Vec::new() }
     }
     pub fn is_alive(&self) -> bool {
         self.hit_points > 0
@@ -209,10 +180,7 @@ impl Boss {
     fn make_turn(&mut self, player: &mut Player) -> Option<Outcome> {
         debug!("");
         debug!("-- Boss turn --");
-        debug!(
-            "- Player has {} hit points, {} armor, {} mana",
-            player.hit_points, player.armor, player.mana
-        );
+        debug!("- Player has {} hit points, {} armor, {} mana", player.hit_points, player.armor, player.mana);
         debug!("- Boss has {} hit points", self.hit_points);
 
         // Apply all effects
@@ -233,15 +201,10 @@ impl Boss {
     fn apply_effects(&mut self) {
         for effect in &mut self.effects {
             match effect {
-                Magic::Poison {
-                    damage, duration, ..
-                } => {
+                Magic::Poison { damage, duration, .. } => {
                     self.hit_points -= *damage;
                     *duration -= 1;
-                    debug!(
-                        "Poison deals {} damage; its timer is now {}",
-                        damage, duration
-                    );
+                    debug!("Poison deals {} damage; its timer is now {}", damage, duration);
                     if self.hit_points <= 0 {
                         debug!("This kills the boss, and the player wins.")
                     }
@@ -257,11 +220,7 @@ impl Boss {
     }
     /// Attack the player
     fn attack(&self, player: &mut Player) {
-        let loss = if self.damage > player.armor {
-            self.damage - player.armor
-        } else {
-            1
-        };
+        let loss = if self.damage > player.armor { self.damage - player.armor } else { 1 };
         player.get_damage(loss);
         debug!("Boss attacks for {} damage", loss);
         if player.hit_points <= 0 {
@@ -300,10 +259,7 @@ pub struct Battle {
 }
 impl Battle {
     pub fn new(player: &Player, boss: &Boss) -> Self {
-        Self {
-            player: player.clone(),
-            boss: boss.clone(),
-        }
+        Self { player: player.clone(), boss: boss.clone() }
     }
     /// Fight until someone is dead
     pub fn fight<F>(&mut self, strategy: &mut F, hard: bool) -> Outcome

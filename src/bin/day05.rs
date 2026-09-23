@@ -3,8 +3,7 @@
 //! <https://adventofcode.com/2015/day/5>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use itertools::Itertools;
 use std::{
     collections::{HashMap, HashSet},
@@ -26,11 +25,7 @@ fn rule2(string: &str) -> bool {
 fn rule3(string: &str) -> bool {
     let letters = ["ab", "cd", "pq", "xy"];
     let chanks: HashSet<String> = HashSet::from_iter(letters.iter().map(|s| s.to_string()));
-    !string
-        .chars()
-        .tuple_windows::<(_, _)>()
-        .map(|(a, b)| a.to_string() + &b.to_string())
-        .any(|a| chanks.contains(&a))
+    !string.chars().tuple_windows::<(_, _)>().map(|(a, b)| a.to_string() + &b.to_string()).any(|a| chanks.contains(&a))
 }
 
 // Rule 4: "contains a pair of any two letters that appears at least twice"
@@ -78,29 +73,29 @@ fn is_nice_2(string: &str) -> bool {
 }
 
 // Read strings from the file
-fn read_data(file_name: &str) -> Result<Vec<String>> {
-    let file = std::fs::File::open(file_name)?;
-    let reader = std::io::BufReader::new(file);
+fn read_data(reader: impl BufRead) -> Result<Vec<String>> {
     Ok(reader.lines().map(|r| if let Ok(res) = r { res } else { panic!() }).collect())
 }
 
 // Solution for Part One
-fn part_1(data: &[String]) -> u32 {
+fn part_one(data: &[String]) -> u32 {
     data.iter().filter(|s| is_nice_1(s)).collect::<Vec<&String>>().len() as u32
 }
 
 // Solution for Part Two
-fn part_2(data: &[String]) -> u32 {
+fn part_two(data: &[String]) -> u32 {
     data.iter().filter(|s| is_nice_2(s)).collect::<Vec<&String>>().len() as u32
 }
 
 fn main() -> Result<()> {
-    let file_name = "puzzles/day05.txt";
-    let data = &read_data(file_name)?;
-    let res_1 = part_1(data);
-    println!("{} There are {} nice strings.", P1.green(), res_1.to_string().green());
-    let res_2 = part_2(data);
-    println!("{} There are {} nice strings.", P2.green(), res_2.to_string().green());
+    let reader = get_reader("puzzles/day05.txt")?;
+    let data = &read_data(reader)?;
+
+    let res_1 = part_one(data);
+    res_1.aoc_print(P1);
+    let res_2 = part_two(data);
+    res_2.aoc_print(P2);
+
     Ok(())
 }
 

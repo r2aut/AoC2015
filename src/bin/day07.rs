@@ -3,16 +3,18 @@
 //! <https://adventofcode.com/2015/day/7>
 
 use anyhow::Result;
-use aoc2015::day07::{
-    circuit::{Circuit, read_circuit},
-    wire::Signal,
+use aoc2015::{
+    AOCPrint,
+    day07::{
+        circuit::{Circuit, read_circuit},
+        wire::Signal,
+    },
+    get_reader,
 };
 use aoc2015::{P1, P2};
-use colored::Colorize;
-use std::{fs::File, io::BufReader, path::Path};
 
 /// Solve part one
-// Tart two needs results from part one so it gets circuit by mut reference
+// Part two needs results from part one so it gets circuit by mut reference
 fn part_one(circut: &mut Circuit) -> Signal {
     circut.process();
     circut.wires.get("a").get()
@@ -28,15 +30,14 @@ fn part_two(circut: &mut Circuit, value: Signal) -> Signal {
 }
 
 fn main() -> Result<()> {
-    let path = Path::new("puzzles/day07.txt");
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let reader = get_reader("puzzles/day07.txt")?;
     let mut circut = read_circuit(reader)?;
 
     let res_1 = part_one(&mut circut);
-    println!("{} {}", P1.blue(), res_1.to_string().green());
+    res_1.aoc_print(P1);
     let res_2 = part_two(&mut circut, res_1);
-    println!("{} {}", P2.blue(), res_2.to_string().green());
+    res_2.aoc_print(P2);
+
     Ok(())
 }
 

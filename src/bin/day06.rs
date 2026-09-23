@@ -3,8 +3,7 @@
 //! <https://adventofcode.com/2015/day/6>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use std::cmp::{max, min};
 use std::fmt::Display;
 use std::io::BufRead;
@@ -44,9 +43,7 @@ struct Screen {
 
 impl Screen {
     fn new(size: usize) -> Self {
-        Self {
-            lights: vec![vec![0; size]; size],
-        }
+        Self { lights: vec![vec![0; size]; size] }
     }
 
     /// Turn on lights on screen zone
@@ -178,27 +175,19 @@ struct Instruction {
 }
 
 /// Read instructions from file
-fn read_instructions(file_name: &str) -> Result<Vec<Instruction>> {
+fn read_instructions(reader: impl BufRead) -> Result<Vec<Instruction>> {
     use regex::Regex;
     let pattern = r"(\D*) (\d*),(\d*) through (\d*),(\d*)";
     let re = Regex::new(pattern)?;
 
     let mut instructions = Vec::<Instruction>::new();
-    let file = std::fs::File::open(file_name)?;
-    let reader = std::io::BufReader::new(file);
     for line in reader.lines() {
         let line = line?;
         let caps = re.captures(&line).ok_or(anyhow!("Nothing found"))?;
         instructions.push(Instruction {
             cmd: caps[1].to_string(),
-            from_pos: Position {
-                x: caps[2].parse::<usize>()?,
-                y: caps[3].parse::<usize>()?,
-            },
-            to_pos: Position {
-                x: caps[4].parse::<usize>()?,
-                y: caps[5].parse::<usize>()?,
-            },
+            from_pos: Position { x: caps[2].parse::<usize>()?, y: caps[3].parse::<usize>()? },
+            to_pos: Position { x: caps[4].parse::<usize>()?, y: caps[5].parse::<usize>()? },
         });
     }
     Ok(instructions)
@@ -231,16 +220,16 @@ fn part_two(screen: &mut Screen, instructions: &Vec<Instruction>) -> u32 {
 }
 
 fn main() -> Result<()> {
-    let file_name = r"puzzles/day06.txt";
-    let instructions = read_instructions(file_name)?;
+    let reader = get_reader(r"puzzles/day06.txt")?;
+    let instructions = read_instructions(reader)?;
 
     let mut screen1 = Screen::new(1000);
     let res_1 = part_one(&mut screen1, &instructions);
-    println!("{} The number of lighting lights are {}", P1.green(), res_1.to_string().green()); // 400410
+    res_1.aoc_print(P1);
 
     let mut screen2 = Screen::new(1000);
     let res_2 = part_two(&mut screen2, &instructions);
-    println!("{} The total brightness is {}", P2.green(), res_2.to_string().green()); // 15343601
+    res_2.aoc_print(P2);
 
     Ok(())
 }

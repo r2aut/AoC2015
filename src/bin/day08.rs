@@ -3,13 +3,8 @@
 //! <https://adventofcode.com/2015/day/8>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-    path::Path,
-};
+use aoc2015::{AOCPrint, P1, P2, get_reader};
+use std::io::BufRead;
 
 /// Convert string from code representation to memory representation
 fn squize_string(inp: &[u8]) -> Vec<u8> {
@@ -120,16 +115,14 @@ fn read_lines(reader: impl BufRead) -> Result<Vec<Vec<u8>>> {
 }
 
 fn main() -> Result<()> {
-    let path = Path::new("puzzles/day08.txt");
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let reader = get_reader("puzzles/day08.txt")?;
     let sss = read_lines(reader)?;
 
     let res_1 = part_one(&sss);
-    println!("{} {}", P1.blue(), res_1.to_string().green());
+    res_1.aoc_print(P1);
 
     let res_2 = part_two(&sss);
-    println!("{} {}", P2.blue(), res_2.to_string().green());
+    res_2.aoc_print(P2);
 
     Ok(())
 }

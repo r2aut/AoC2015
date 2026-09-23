@@ -3,12 +3,10 @@
 //! <https://adventofcode.com/2015/day/24>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use std::{
     cmp::Ordering::{Equal, Greater, Less},
-    fs::File,
-    io::{BufRead, BufReader},
+    io::BufRead,
 };
 
 /// Get all packet sets using backtraking
@@ -82,23 +80,14 @@ fn calc_best_eq(packets: &[i32], group_num: i32) -> Option<i128> {
 }
 
 fn main() -> Result<()> {
-    let path = "puzzles/day24.txt";
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let reader = get_reader("puzzles/day24.txt")?;
     let mut packets = read_packets(reader)?;
-    // sort in reverse oreder to speed up calculations
     packets.sort_by(|a, b| b.cmp(a));
 
-    if let Some(res1) = calc_best_eq(&packets, 3) {
-        println!("{} {}", P1.blue(), res1.to_string().green());
-    } else {
-        println!("{} no best group found", P1.blue());
-    }
-    if let Some(res2) = calc_best_eq(&packets, 4) {
-        println!("{} {}", P2.blue(), res2.to_string().green());
-    } else {
-        println!("{} no best group found", P2.blue());
-    }
+    let res1 = calc_best_eq(&packets, 3);
+    res1.aoc_print(P1);
+    let res2 = calc_best_eq(&packets, 4);
+    res2.aoc_print(P2);
 
     Ok(())
 }

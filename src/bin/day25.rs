@@ -3,14 +3,9 @@
 //! <https://adventofcode.com/2015/day/25>
 
 use anyhow::{Result, anyhow};
-use aoc2015::P1;
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, get_reader};
 use regex::Regex;
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-    path::Path,
-};
+use std::io::BufRead;
 
 /// Number that starts the sequence
 #[derive(Debug, Clone, Copy)]
@@ -22,12 +17,7 @@ impl IntoIterator for Code {
     type IntoIter = CodeGenerator;
 
     fn into_iter(self) -> Self::IntoIter {
-        CodeGenerator {
-            row: 1,
-            col: 1,
-            value: self.0,
-            is_first: true,
-        }
+        CodeGenerator { row: 1, col: 1, value: self.0, is_first: true }
     }
 }
 
@@ -91,13 +81,11 @@ fn main() -> Result<()> {
     let first_num = 20151125;
     let num = Code(first_num);
 
-    let path = Path::new("puzzles/day25.txt");
-    let file = File::open(path)?;
-    let mut reader = BufReader::new(file);
+    let mut reader = get_reader("puzzles/day25.txt")?;
     let (row, col) = read_data(&mut reader)?;
 
     let res1 = part_one(&num, row, col);
-    println!("{} {}", P1.blue(), res1.to_string().green());
+    res1.aoc_print(P1);
 
     Ok(())
 }

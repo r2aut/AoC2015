@@ -3,16 +3,10 @@
 //! <https://adventofcode.com/2015/day/13>
 
 use anyhow::{Result, bail};
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use itertools::Itertools;
 use regex::Regex;
-use std::{
-    collections::HashMap,
-    fs::File,
-    io::{BufRead, BufReader},
-    path::Path,
-};
+use std::{collections::HashMap, io::BufRead};
 
 type Guests = HashMap<String, HashMap<String, i32>>;
 
@@ -54,17 +48,15 @@ fn calc_best_happiness_change(guests: &Guests) -> i32 {
 }
 
 fn main() -> Result<()> {
-    let path = Path::new("puzzles/day13.txt");
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let reader = get_reader("puzzles/day13.txt")?;
     let mut guests = read_guests(reader)?;
 
     let res1 = calc_best_happiness_change(&guests);
-    println!("{} {}", P1.blue(), res1.to_string().green());
+    res1.aoc_print(P1);
 
     guests.insert("Me".to_string(), HashMap::new());
     let res2 = calc_best_happiness_change(&guests);
-    println!("{} {}", P2.blue(), res2.to_string().green());
+    res2.aoc_print(P2);
 
     Ok(())
 }

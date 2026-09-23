@@ -3,13 +3,11 @@
 //! <https://adventofcode.com/2015/day/9>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
 
 type City = String;
 
@@ -22,10 +20,7 @@ struct Cities {
 
 impl Cities {
     fn new() -> Self {
-        Cities {
-            all_cities: Vec::new(),
-            all_distances: HashMap::new(),
-        }
+        Cities { all_cities: Vec::new(), all_distances: HashMap::new() }
     }
 
     fn add_city(&mut self, city: &str) {
@@ -37,16 +32,10 @@ impl Cities {
     fn add_distance(&mut self, city1: &str, city2: &str, dist: u32) {
         self.add_city(city1);
         self.add_city(city2);
-        let c1 = if let Some(res) = self.all_cities.iter().find(|i| **i == city1) {
-            res.clone()
-        } else {
-            unreachable!()
-        };
-        let c2 = if let Some(res) = self.all_cities.iter().find(|i| **i == city2) {
-            res.clone()
-        } else {
-            unreachable!()
-        };
+        let c1 =
+            if let Some(res) = self.all_cities.iter().find(|i| **i == city1) { res.clone() } else { unreachable!() };
+        let c2 =
+            if let Some(res) = self.all_cities.iter().find(|i| **i == city2) { res.clone() } else { unreachable!() };
 
         let cc = (c1, c2);
         self.all_distances.entry(cc).insert_entry(dist);
@@ -70,14 +59,9 @@ impl Cities {
 }
 
 /// Read data from file
-fn read_city_distances(file_name: &str) -> Result<Cities> {
+fn read_city_distances(reader: impl BufRead) -> Result<Cities> {
     let mut res = Cities::new();
-
-    // pattern for "London to Dublin = 464"
     let pattern = Regex::new(r"(\w*) to (\w*) = (\d*)")?;
-
-    let file = File::open(file_name)?;
-    let reader = BufReader::new(file);
     for line in reader.lines() {
         let line = line?;
         let cap = pattern.captures(&line).ok_or(anyhow!("Cannot find anything"))?;
@@ -91,40 +75,23 @@ fn read_city_distances(file_name: &str) -> Result<Cities> {
 
 /// Solution for part one
 fn part_one(cities: &Cities) -> Option<u32> {
-    cities
-        .cities()
-        .iter()
-        .permutations(cities.all_cities.len())
-        .map(|v| cities.distance(v))
-        .min()
-        .flatten()
+    cities.cities().iter().permutations(cities.all_cities.len()).map(|v| cities.distance(v)).min().flatten()
 }
 
 /// Solution for part two
 fn part_two(cities: &Cities) -> Option<u32> {
-    cities
-        .cities()
-        .iter()
-        .permutations(cities.all_cities.len())
-        .map(|v| cities.distance(v))
-        .max()
-        .flatten()
+    cities.cities().iter().permutations(cities.all_cities.len()).map(|v| cities.distance(v)).max().flatten()
 }
 
 fn main() -> Result<()> {
-    let cities = read_city_distances(r"puzzles/day09.txt")?;
+    let reader = get_reader(r"puzzles/day09.txt")?;
+    let cities = read_city_distances(reader)?;
 
-    if let Some(res_1) = part_one(&cities) {
-        println!("{} The sortest distance is {}", P1.green(), res_1.to_string().green());
-    } else {
-        println!("{} Unknown result", P1.blue());
-    }
+    let res_1 = part_one(&cities);
+    res_1.aoc_print(P1);
 
-    if let Some(res_2) = part_two(&cities) {
-        println!("{} The longest distance is {}", P2.green(), res_2.to_string().green());
-    } else {
-        println!("{} Unknown result", P2.blue());
-    }
+    let res_2 = part_two(&cities);
+    res_2.aoc_print(P2);
 
     Ok(())
 }

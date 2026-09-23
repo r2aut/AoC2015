@@ -3,12 +3,10 @@
 //! <https://adventofcode.com/2015/day/2>
 
 use anyhow::{Ok, Result};
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use itertools::Itertools;
 use regex::Regex;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
 
 #[derive(Debug)]
 struct Present {
@@ -31,9 +29,7 @@ impl Present {
     }
 }
 
-fn read_data(path: &str) -> Result<Vec<Present>> {
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+fn read_data(reader: impl BufRead) -> Result<Vec<Present>> {
     let re = Regex::new(r"(\d*)x(\d*)x(\d*)")?;
     let mut result: Vec<Present> = Vec::new();
     for line_ in reader.lines() {
@@ -74,9 +70,11 @@ fn part_two(data: &Vec<Present>) -> i32 {
 }
 
 fn main() -> Result<()> {
-    let data = read_data(r"puzzles/day02.txt")?;
-    println!("{} The total square of paper is {}", P1.green(), part_one(&data).to_string().green());
-    println!("{} The total length of ribbon is {}", P2.green(), part_two(&data).to_string().green());
+    let reader = get_reader(r"puzzles/day02.txt")?;
+    let data = read_data(reader)?;
+    part_one(&data).aoc_print(P1);
+    part_two(&data).aoc_print(P2);
+
     Ok(())
 }
 

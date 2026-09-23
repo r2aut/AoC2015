@@ -3,28 +3,19 @@
 //! <https://adventofcode.com/2015/day/12>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use serde_json::Value;
-use std::{fs::File, io::BufReader, path::Path};
 
 /// Visit all nodes of the json
 fn visit_node(value: &Value, counter: &mut i64, check_for_red: bool) {
     if value.is_array() {
-        for v in value
-            .as_array()
-            .expect("It is already checked that it should be array")
-        {
+        for v in value.as_array().expect("It is already checked that it should be array") {
             visit_node(v, counter, check_for_red);
         }
     } else if value.is_object() {
         let mut bad = false;
         if check_for_red {
-            for v in value
-                .as_object()
-                .expect("It is already checked that it should be object")
-                .values()
-            {
+            for v in value.as_object().expect("It is already checked that it should be object").values() {
                 if v.is_string() && v == "red" {
                     bad = true;
                     break;
@@ -32,18 +23,12 @@ fn visit_node(value: &Value, counter: &mut i64, check_for_red: bool) {
             }
         }
         if !bad {
-            for v in value
-                .as_object()
-                .expect("It is already checked that it should be object")
-                .values()
-            {
+            for v in value.as_object().expect("It is already checked that it should be object").values() {
                 visit_node(v, counter, check_for_red);
             }
         }
     } else if value.is_i64() {
-        *counter += value
-            .as_i64()
-            .expect("It is already checked that it should be i64");
+        *counter += value.as_i64().expect("It is already checked that it should be i64");
     }
 }
 
@@ -60,14 +45,12 @@ fn part_two(json: &Value) -> i64 {
 }
 
 fn main() -> Result<()> {
-    let path = Path::new("puzzles/day12.txt");
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let reader = get_reader("puzzles/day12.txt")?;
     let json: Value = serde_json::from_reader(reader)?;
     let res1 = part_one(&json);
-    println!("{} {}", P1.blue(), res1.to_string().green());
+    res1.aoc_print(P1);
     let res2 = part_two(&json);
-    println!("{} {}", P2.blue(), res2.to_string().green());
+    res2.aoc_print(P2);
     Ok(())
 }
 

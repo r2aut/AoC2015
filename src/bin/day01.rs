@@ -3,60 +3,39 @@
 //! <https://adventofcode.com/2015/day/1>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use aoc2015::{AOCPrint, P1, P2, get_reader};
+use std::io::BufRead;
 
-pub fn go_to_finish(instructions: &str) -> i32 {
-    let mut floor = 0;
-    for command in instructions.chars() {
-        match command {
-            '(' => floor += 1,
-            ')' => floor -= 1,
-            _ => (),
-        }
-    }
-    floor
-}
-
-fn go_to_basement(instructions: &str) -> Option<i32> {
-    let mut step = 0;
-    let mut floor = 0;
+fn follow_instructions(instructions: &str) -> (i32, Option<i32>) {
+    let mut cur_step = 0;
+    let mut cur_floor = 0;
+    let mut first_step_on_basement: Option<i32> = None;
 
     for ch in instructions.chars() {
         match ch {
-            '(' => floor += 1,
-            ')' => floor -= 1,
+            '(' => cur_floor += 1,
+            ')' => cur_floor -= 1,
             _ => panic!("Wrong input symbol: {ch}"),
         }
-        step += 1;
-        // println!("Floor {floor}");
+        cur_step += 1;
 
-        if floor < 0 {
-            break;
+        if first_step_on_basement.is_none() && cur_floor < 0 {
+            first_step_on_basement = Some(cur_step);
         }
     }
 
-    Some(step)
+    (cur_floor, first_step_on_basement)
 }
 
 fn main() -> Result<()> {
-    let file = File::open("puzzles/day01.txt")?;
-    let mut reader = BufReader::new(file);
-    let mut line = String::new();
-    if reader.read_line(&mut line)? > 0 {
-        let instructions = line.trim();
+    let mut reader = get_reader("puzzles/day01.txt")?;
+    let mut buf = String::new();
+    if reader.read_line(&mut buf)? > 0 {
+        let instructions = buf.trim();
 
-        let r1 = go_to_finish(instructions);
-        println!("{} The instructions take Santa to the {} floor.", P1.green(), r1.to_string().green());
-
-        let r2 = go_to_basement(instructions);
-        if let Some(res) = r2 {
-            println!("{} The position of the character is {}.", P2.green(), res.to_string().green())
-        } else {
-            print!("{} Santa didn't enter the basement.", P2.green())
-        }
+        let (res1, res2) = follow_instructions(instructions);
+        res1.aoc_print(P1);
+        res2.aoc_print(P2);
     }
     Ok(())
 }
@@ -67,16 +46,16 @@ mod tests {
 
     #[test]
     fn test_go_to_finish() {
-        assert_eq!(go_to_finish("(())"), 0);
-        assert_eq!(go_to_finish("()()"), 0);
-        assert_eq!(go_to_finish("((("), 3);
-        assert_eq!(go_to_finish("))((((("), 3);
-        assert_eq!(go_to_finish(")))"), -3);
-        assert_eq!(go_to_finish(")())())"), -3);
+        assert_eq!(follow_instructions("(())").0, 0);
+        assert_eq!(follow_instructions("()()").0, 0);
+        assert_eq!(follow_instructions("(((").0, 3);
+        assert_eq!(follow_instructions("))(((((").0, 3);
+        assert_eq!(follow_instructions(")))").0, -3);
+        assert_eq!(follow_instructions(")())())").0, -3);
     }
 
     #[test]
     fn test_go_to_basement() {
-        assert_eq!(go_to_basement("()())"), Some(5))
+        assert_eq!(follow_instructions("()())").1, Some(5))
     }
 }

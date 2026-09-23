@@ -3,11 +3,9 @@
 //! <https://adventofcode.com/2015/day/3>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use std::collections::HashSet;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
 
 #[derive(Debug, Default, PartialEq, Eq, Clone, Copy, Hash)]
 struct Point {
@@ -35,10 +33,7 @@ struct Runner {
 
 impl Runner {
     fn new() -> Self {
-        Self {
-            pos: Point::new(),
-            trace: vec![Point::new()],
-        }
+        Self { pos: Point::new(), trace: vec![Point::new()] }
     }
 
     fn step(&mut self, dir: &Direction) {
@@ -113,20 +108,16 @@ fn part_two(instructions: &str) -> i32 {
 }
 
 fn main() -> Result<()> {
-    let file_name = "puzzles/day03.txt";
-    let file = File::open(file_name)?;
-    let mut reader = BufReader::new(file);
+    let mut reader = get_reader("puzzles/day03.txt")?;
     let mut buffer = String::new();
     reader.read_line(&mut buffer)?;
     let instructions = buffer.trim();
 
-    // Solve part one
     let res_1 = part_one(instructions);
-    println!("{} At least one present got {} children", P1.green(), res_1.to_string().green());
+    res_1.aoc_print(P1);
 
-    // Solve part two
     let res_2 = part_two(instructions);
-    println!("{} At least one present got {} children", P2.green(), res_2.to_string().green());
+    res_2.aoc_print(P2);
 
     Ok(())
 }

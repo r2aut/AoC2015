@@ -3,8 +3,7 @@
 //! <https://adventofcode.com/2015/day/4>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
+use aoc2015::{AOCPrint, P1, P2, get_reader};
 use std::io::BufRead;
 
 struct AdventCoin {
@@ -48,6 +47,10 @@ impl Iterator for AdventCoin {
 }
 
 fn main() -> Result<()> {
+    let mut reader = get_reader("puzzles/day03.txt")?;
+    let mut buffer = String::new();
+    reader.read_line(&mut buffer)?;
+
     let file_name = "puzzles/day04.txt";
     let file = std::fs::File::open(file_name)?;
     let mut reader = std::io::BufReader::new(file);
@@ -56,23 +59,16 @@ fn main() -> Result<()> {
     let line = buf.trim();
     let secret_key = line;
 
-    // let secret_key = "bgvyzdsv";
-
     let coin = AdventCoin::new_coin(secret_key, 5);
     let mut it = coin.into_iter();
-    if let Some(res) = it.next() {
-        println!("{} The first secret key for 5-zero coins is {}", P1.green(), res.to_string().green());
-    } else {
-        println!("{} - No result", P1.blue())
-    }
+    let res1 = it.next();
+    res1.aoc_print(P1);
 
     let coin = AdventCoin::new_coin(secret_key, 6);
     let mut it = coin.into_iter();
-    if let Some(res) = it.next() {
-        println!("{} The first secret key for 6-zero coins is {}", P2.green(), res.to_string().green());
-    } else {
-        println!("{} - No result", P1.blue())
-    }
+
+    let res2 = it.next();
+    res2.aoc_print(P2);
 
     Ok(())
 }

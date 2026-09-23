@@ -3,13 +3,8 @@
 //! <https://adventofcode.com/2015/day/11>
 
 use anyhow::Result;
-use aoc2015::{P1, P2};
-use colored::Colorize;
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-    path::Path,
-};
+use aoc2015::{AOCPrint, P1, P2, get_reader};
+use std::io::BufRead;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 struct Password(String);
@@ -105,15 +100,13 @@ fn read_init_password(reader: &mut impl BufRead) -> Result<Password> {
 }
 
 fn main() -> Result<()> {
-    let path = Path::new("puzzles/day11.txt");
-    let file = File::open(path)?;
-    let mut reader = BufReader::new(file);
+    let mut reader = get_reader("puzzles/day11.txt")?;
     let mut password = read_init_password(&mut reader)?;
 
     let res_1 = password.next_password()?;
-    println!("{}{}", P1.blue(), res_1.green());
+    res_1.aoc_print(P1);
     let res_2 = password.next_password()?;
-    println!("{}{}", P2.blue(), res_2.green());
+    res_2.aoc_print(P2);
     Ok(())
 }
 

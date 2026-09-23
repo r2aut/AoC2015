@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/25>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, get_reader};
+use aoc2015::{AOCPrint, P1, get_reader, print_day};
 use regex::Regex;
 use std::io::BufRead;
 
@@ -84,6 +84,7 @@ fn main() -> Result<()> {
     let mut reader = get_reader("puzzles/day25.txt")?;
     let (row, col) = read_data(&mut reader)?;
 
+    print_day();
     let res1 = part_one(&num, row, col);
     res1.aoc_print(P1);
 

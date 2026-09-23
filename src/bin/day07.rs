@@ -9,7 +9,7 @@ use aoc2015::{
         circuit::{Circuit, read_circuit},
         wire::Signal,
     },
-    get_reader,
+    get_reader, print_day,
 };
 use aoc2015::{P1, P2};
 
@@ -32,7 +32,7 @@ fn part_two(circut: &mut Circuit, value: Signal) -> Signal {
 fn main() -> Result<()> {
     let reader = get_reader("puzzles/day07.txt")?;
     let mut circut = read_circuit(reader)?;
-
+    print_day();
     let res_1 = part_one(&mut circut);
     res_1.aoc_print(P1);
     let res_2 = part_two(&mut circut, res_1);

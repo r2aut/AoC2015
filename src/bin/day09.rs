@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/9>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashMap;
@@ -86,6 +86,8 @@ fn part_two(cities: &Cities) -> Option<u32> {
 fn main() -> Result<()> {
     let reader = get_reader(r"puzzles/day09.txt")?;
     let cities = read_city_distances(reader)?;
+
+    print_day();
 
     let res_1 = part_one(&cities);
     res_1.aoc_print(P1);

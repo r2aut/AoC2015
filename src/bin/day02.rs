@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/2>
 
 use anyhow::{Ok, Result};
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use regex::Regex;
 use std::io::BufRead;
@@ -72,6 +72,7 @@ fn part_two(data: &Vec<Present>) -> i32 {
 fn main() -> Result<()> {
     let reader = get_reader(r"puzzles/day02.txt")?;
     let data = read_data(reader)?;
+    print_day();
     part_one(&data).aoc_print(P1);
     part_two(&data).aoc_print(P2);
 

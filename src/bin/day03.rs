@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/3>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::collections::HashSet;
 use std::io::BufRead;
 
@@ -112,6 +112,8 @@ fn main() -> Result<()> {
     let mut buffer = String::new();
     reader.read_line(&mut buffer)?;
     let instructions = buffer.trim();
+
+    print_day();
 
     let res_1 = part_one(instructions);
     res_1.aoc_print(P1);

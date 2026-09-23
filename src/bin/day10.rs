@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/10>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use std::io::BufRead;
 
@@ -64,6 +64,8 @@ fn read_starting_value(mut reader: impl BufRead) -> Result<String> {
 fn main() -> Result<()> {
     let reader = get_reader(r"puzzles/day10.txt")?;
     let starting_item = read_starting_value(reader)?;
+
+    print_day();
 
     let res_1 = look_and_say_with_starting_item(&starting_item).nth(40).ok_or(anyhow!("Cannot fild"))?.len();
     res_1.aoc_print(P1);

@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/24>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::{
     cmp::Ordering::{Equal, Greater, Less},
     io::BufRead,
@@ -84,6 +84,7 @@ fn main() -> Result<()> {
     let mut packets = read_packets(reader)?;
     packets.sort_by(|a, b| b.cmp(a));
 
+    print_day();
     let res1 = calc_best_eq(&packets, 3);
     res1.aoc_print(P1);
     let res2 = calc_best_eq(&packets, 4);

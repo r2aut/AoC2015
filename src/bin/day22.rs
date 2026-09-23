@@ -9,7 +9,7 @@ use aoc2015::{
         fighters::{Battle, Boss, Outcome, Player},
         magic::Magic,
     },
-    get_reader,
+    get_reader, print_day,
 };
 use std::{cmp::min, io::BufRead};
 
@@ -63,6 +63,7 @@ fn main() -> Result<()> {
     let player = Player::new(50, 500);
     let battle_num = 100000;
 
+    print_day();
     let res1 = part_one(&player, &boss, battle_num, &mut Player::get_random_magic);
     res1.aoc_print(P1);
     let res2 = part_two(&player, &boss, battle_num, &mut Player::get_random_magic);

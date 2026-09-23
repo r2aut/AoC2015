@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/1>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 fn follow_instructions(instructions: &str) -> (i32, Option<i32>) {
@@ -34,6 +34,7 @@ fn main() -> Result<()> {
         let instructions = buf.trim();
 
         let (res1, res2) = follow_instructions(instructions);
+        print_day();
         res1.aoc_print(P1);
         res2.aoc_print(P2);
     }

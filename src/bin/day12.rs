@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/12>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use serde_json::Value;
 
 /// Visit all nodes of the json
@@ -47,6 +47,7 @@ fn part_two(json: &Value) -> i64 {
 fn main() -> Result<()> {
     let reader = get_reader("puzzles/day12.txt")?;
     let json: Value = serde_json::from_reader(reader)?;
+    print_day();
     let res1 = part_one(&json);
     res1.aoc_print(P1);
     let res2 = part_two(&json);

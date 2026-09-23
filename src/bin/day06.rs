@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/6>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::cmp::{max, min};
 use std::fmt::Display;
 use std::io::BufRead;
@@ -222,6 +222,8 @@ fn part_two(screen: &mut Screen, instructions: &Vec<Instruction>) -> u32 {
 fn main() -> Result<()> {
     let reader = get_reader(r"puzzles/day06.txt")?;
     let instructions = read_instructions(reader)?;
+
+    print_day();
 
     let mut screen1 = Screen::new(1000);
     let res_1 = part_one(&mut screen1, &instructions);

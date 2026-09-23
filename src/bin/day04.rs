@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/4>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 struct AdventCoin {
@@ -58,6 +58,8 @@ fn main() -> Result<()> {
     reader.read_line(&mut buf)?;
     let line = buf.trim();
     let secret_key = line;
+
+    print_day();
 
     let coin = AdventCoin::new_coin(secret_key, 5);
     let mut it = coin.into_iter();

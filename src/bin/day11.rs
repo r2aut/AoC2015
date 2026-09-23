@@ -3,7 +3,7 @@
 //! <https://adventofcode.com/2015/day/11>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader};
+use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -102,7 +102,7 @@ fn read_init_password(reader: &mut impl BufRead) -> Result<Password> {
 fn main() -> Result<()> {
     let mut reader = get_reader("puzzles/day11.txt")?;
     let mut password = read_init_password(&mut reader)?;
-
+    print_day();
     let res_1 = password.next_password()?;
     res_1.aoc_print(P1);
     let res_2 = password.next_password()?;

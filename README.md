@@ -6,19 +6,19 @@ AoC2015 are the tasks of the Advent of Code contest run in December 2015.
 
 Tasks of the Advent of Code 2015:
 
-- Day 1: Not Quite Lisp
-- Day 2: I Was Told There Would Be No Math
-- Day 3: Perfectly Spherical Houses in a Vacuum
-- Day 4: The Ideal Stocking Stuffer
-- Day 5: Doesn't He Have Intern-Elves For This?
-- Day 6: Probably a Fire Hazard
-- Day 7: Some Assembly Required
-- Day 8: Matchsticks
-- Day 9: All in a Single Night
-- Day 10: Elves Look, Elves Say
-- Day 11: Corporate Policy
-- Day 12: JSAbacusFramework.io
-- Day 13: Knights of the Dinner Table
-- Day 22: Wizard Simulator 20XX
-- Day 24: It Hangs in the Balance
-- Day 25: Let It Snow
+- [Day 1: Not Quite Lisp](docs/day01.md)
+- [Day 2: I Was Told There Would Be No Math](docs/day02.md)
+- [Day 3: Perfectly Spherical Houses in a Vacuum](docs/day03.md)
+- [Day 4: The Ideal Stocking Stuffer](docs/day04.md)
+- [Day 5: Doesn't He Have Intern-Elves For This?](docs/day05.md)
+- [Day 6: Probably a Fire Hazard](docs/day06.md)
+- [Day 7: Some Assembly Required](docs/day07.md)
+- [Day 8: Matchsticks](docs/day08.md)
+- [Day 9: All in a Single Night](docs/day09.md)
+- [Day 10: Elves Look, Elves Say](docs/day10.md)
+- [Day 11: Corporate Policy](docs/day11.md)
+- [Day 12: JSAbacusFramework.io](docs/day12.md)
+- [Day 13: Knights of the Dinner Table](docs/day13.md)
+- [Day 22: Wizard Simulator 20XX](docs/day22.md)
+- [Day 24: It Hangs in the Balance](docs/day24.md)
+- [Day 25: Let It Snow](docs/day25.md)

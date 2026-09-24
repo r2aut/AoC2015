@@ -30,7 +30,8 @@ pub trait Gate {
 pub enum InputField {
     Wire(RefWire), // connected to wire
     Value(Signal), // has direct signal number
-    None,          // disconnected
+    #[allow(dead_code)]
+    None, // disconnected
 }
 
 /// Gate with AND operation

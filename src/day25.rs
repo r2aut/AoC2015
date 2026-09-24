@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/25>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, get_reader, print_day};
 use regex::Regex;
 use std::io::BufRead;
 
@@ -77,18 +76,14 @@ fn read_data(reader: &mut impl BufRead) -> Result<(usize, usize)> {
         Err(anyhow!("Cannnot find"))
     }
 }
-fn main() -> Result<()> {
+
+pub fn solve(mut reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let first_num = 20151125;
     let num = Code(first_num);
-
-    let mut reader = get_reader("puzzles/day25.txt")?;
     let (row, col) = read_data(&mut reader)?;
-
-    print_day();
-    let res1 = part_one(&num, row, col);
-    res1.aoc_print(P1);
-
-    Ok(())
+    let res1 = Some(part_one(&num, row, col).to_string());
+    let res2 = Some("no task".to_string());
+    Ok((res1, res2))
 }
 
 #[cfg(test)]

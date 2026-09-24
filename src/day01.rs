@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/1>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 fn follow_instructions(instructions: &str) -> (i32, Option<i32>) {
@@ -23,22 +22,21 @@ fn follow_instructions(instructions: &str) -> (i32, Option<i32>) {
             first_step_on_basement = Some(cur_step);
         }
     }
-
     (cur_floor, first_step_on_basement)
 }
 
-fn main() -> Result<()> {
-    let mut reader = get_reader("puzzles/day01.txt")?;
+pub fn solve(mut reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let mut buf = String::new();
     if reader.read_line(&mut buf)? > 0 {
         let instructions = buf.trim();
-
         let (res1, res2) = follow_instructions(instructions);
-        print_day();
-        res1.aoc_print(P1);
-        res2.aoc_print(P2);
+        let res1_str = Some(res1.to_string());
+        let res2_str = res2.map(|v| v.to_string());
+
+        Ok((res1_str, res2_str))
+    } else {
+        Ok((None, None))
     }
-    Ok(())
 }
 
 #[cfg(test)]

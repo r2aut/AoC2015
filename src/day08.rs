@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/8>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 /// Convert string from code representation to memory representation
@@ -114,19 +113,12 @@ fn read_lines(reader: impl BufRead) -> Result<Vec<Vec<u8>>> {
     Ok(res)
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader("puzzles/day08.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let sss = read_lines(reader)?;
 
-    print_day();
-
-    let res_1 = part_one(&sss);
-    res_1.aoc_print(P1);
-
-    let res_2 = part_two(&sss);
-    res_2.aoc_print(P2);
-
-    Ok(())
+    let res_1 = Some(part_one(&sss).to_string());
+    let res_2 = Some(part_two(&sss).to_string());
+    Ok((res_1, res_2))
 }
 
 #[cfg(test)]

@@ -14,8 +14,8 @@ pub const AOC_DESC: &str = "Advent of Code 2015";
 pub const P1: &str = "Part one = ";
 pub const P2: &str = "Part two = ";
 
-pub mod day07;
-pub mod day22;
+// pub mod day07;
+// pub mod day22;
 
 pub fn get_reader<P: AsRef<Path>>(path: P) -> Result<impl BufRead> {
     let file = File::open(path)?;
@@ -27,7 +27,7 @@ pub fn get_executable_name() -> Option<String> {
     std::env::current_exe().ok()?.file_name()?.to_str()?.to_owned().into()
 }
 
-pub fn print_day() {
+pub fn aoc_print_day() {
     if let Some(day) = get_executable_name() {
         println!("{} {}", AOC, day);
         println!("-------------")

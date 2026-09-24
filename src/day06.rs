@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/6>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::cmp::{max, min};
 use std::fmt::Display;
 use std::io::BufRead;
@@ -219,21 +218,16 @@ fn part_two(screen: &mut Screen, instructions: &Vec<Instruction>) -> u32 {
     screen.get_total_brightness()
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader(r"puzzles/day06.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let instructions = read_instructions(reader)?;
 
-    print_day();
-
     let mut screen1 = Screen::new(1000);
-    let res_1 = part_one(&mut screen1, &instructions);
-    res_1.aoc_print(P1);
+    let res_1 = Some(part_one(&mut screen1, &instructions).to_string());
 
     let mut screen2 = Screen::new(1000);
-    let res_2 = part_two(&mut screen2, &instructions);
-    res_2.aoc_print(P2);
+    let res_2 = Some(part_two(&mut screen2, &instructions).to_string());
 
-    Ok(())
+    Ok((res_1, res_2))
 }
 
 /// Tests

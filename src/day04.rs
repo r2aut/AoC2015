@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/4>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::io::BufRead;
 
 struct AdventCoin {
@@ -46,33 +45,20 @@ impl Iterator for AdventCoin {
     }
 }
 
-fn main() -> Result<()> {
-    let mut reader = get_reader("puzzles/day03.txt")?;
-    let mut buffer = String::new();
-    reader.read_line(&mut buffer)?;
-
-    let file_name = "puzzles/day04.txt";
-    let file = std::fs::File::open(file_name)?;
-    let mut reader = std::io::BufReader::new(file);
+pub fn solve(mut reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let mut buf = String::new();
     reader.read_line(&mut buf)?;
-    let line = buf.trim();
-    let secret_key = line;
-
-    print_day();
+    let secret_key = buf.trim();
 
     let coin = AdventCoin::new_coin(secret_key, 5);
     let mut it = coin.into_iter();
-    let res1 = it.next();
-    res1.aoc_print(P1);
+    let res1 = it.next().map(|v| v.to_string());
 
     let coin = AdventCoin::new_coin(secret_key, 6);
     let mut it = coin.into_iter();
+    let res2 = it.next().map(|v| v.to_string());
 
-    let res2 = it.next();
-    res2.aoc_print(P2);
-
-    Ok(())
+    Ok((res1, res2))
 }
 
 #[cfg(test)]

@@ -2,16 +2,15 @@
 //!
 //! <https://adventofcode.com/2015/day/7>
 
+pub mod circuit;
+pub mod gate;
+pub mod wire;
+
+use std::io::BufRead;
+
 use anyhow::Result;
-use aoc2015::{
-    AOCPrint,
-    day07::{
-        circuit::{Circuit, read_circuit},
-        wire::Signal,
-    },
-    get_reader, print_day,
-};
-use aoc2015::{P1, P2};
+use circuit::{Circuit, read_circuit};
+use wire::Signal;
 
 /// Solve part one
 // Part two needs results from part one so it gets circuit by mut reference
@@ -29,17 +28,26 @@ fn part_two(circut: &mut Circuit, value: Signal) -> Signal {
     circut.wires.get("a").get()
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader("puzzles/day07.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let mut circut = read_circuit(reader)?;
-    print_day();
     let res_1 = part_one(&mut circut);
-    res_1.aoc_print(P1);
+    let res_1_opt = Some(res_1.to_string());
     let res_2 = part_two(&mut circut, res_1);
-    res_2.aoc_print(P2);
-
-    Ok(())
+    let res_2_opt = Some(res_2.to_string());
+    Ok((res_1_opt, res_2_opt))
 }
+
+// fn main() -> Result<()> {
+//     let reader = get_reader("puzzles/day07.txt")?;
+//     let mut circut = read_circuit(reader)?;
+//     aoc_print_day();
+//     let res_1 = part_one(&mut circut);
+//     res_1.aoc_print(P1);
+//     let res_2 = part_two(&mut circut, res_1);
+//     res_2.aoc_print(P2);
+
+//     Ok(())
+// }
 
 #[cfg(test)]
 mod test {

@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/9>
 
 use anyhow::{Result, anyhow};
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashMap;
@@ -83,19 +82,11 @@ fn part_two(cities: &Cities) -> Option<u32> {
     cities.cities().iter().permutations(cities.all_cities.len()).map(|v| cities.distance(v)).max().flatten()
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader(r"puzzles/day09.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let cities = read_city_distances(reader)?;
-
-    print_day();
-
-    let res_1 = part_one(&cities);
-    res_1.aoc_print(P1);
-
-    let res_2 = part_two(&cities);
-    res_2.aoc_print(P2);
-
-    Ok(())
+    let res_1 = part_one(&cities).map(|v| v.to_string());
+    let res_2 = part_two(&cities).map(|v| v.to_string());
+    Ok((res_1, res_2))
 }
 
 #[cfg(test)]

@@ -2,15 +2,12 @@
 //!
 //! <https://adventofcode.com/2015/day/22>
 
+pub mod fighters;
+pub mod magic;
+
 use anyhow::{Result, anyhow};
-use aoc2015::{
-    AOCPrint, P1, P2,
-    day22::{
-        fighters::{Battle, Boss, Outcome, Player},
-        magic::Magic,
-    },
-    get_reader, print_day,
-};
+use fighters::{Battle, Boss, Outcome, Player};
+use magic::Magic;
 use std::{cmp::min, io::BufRead};
 
 /// Read boss characteristics from file
@@ -56,26 +53,25 @@ where
     mana
 }
 
-fn main() -> Result<()> {
-    let mut reader = get_reader("puzzles/day22.txt")?;
+pub fn solve(mut reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let boss = read_boss(&mut reader)?;
 
     let player = Player::new(50, 500);
     let battle_num = 100000;
 
-    print_day();
     let res1 = part_one(&player, &boss, battle_num, &mut Player::get_random_magic);
-    res1.aoc_print(P1);
-    let res2 = part_two(&player, &boss, battle_num, &mut Player::get_random_magic);
-    res2.aoc_print(P2);
+    let res1_opt = Some(res1.to_string());
 
-    Ok(())
+    let res2 = part_two(&player, &boss, battle_num, &mut Player::get_random_magic);
+    let res2_opt = Some(res2.to_string());
+
+    Ok((res1_opt, res2_opt))
 }
 
 #[cfg(test)]
 mod test {
+    use super::magic::*;
     use super::*;
-    use aoc2015::day22::magic::*;
 
     struct DetermenedMagic {
         magic: Vec<Magic>,

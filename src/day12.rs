@@ -3,8 +3,8 @@
 //! <https://adventofcode.com/2015/day/12>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use serde_json::Value;
+use std::io::BufRead;
 
 /// Visit all nodes of the json
 fn visit_node(value: &Value, counter: &mut i64, check_for_red: bool) {
@@ -44,15 +44,11 @@ fn part_two(json: &Value) -> i64 {
     counter
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader("puzzles/day12.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let json: Value = serde_json::from_reader(reader)?;
-    print_day();
-    let res1 = part_one(&json);
-    res1.aoc_print(P1);
-    let res2 = part_two(&json);
-    res2.aoc_print(P2);
-    Ok(())
+    let res1 = Some(part_one(&json).to_string());
+    let res2 = Some(part_two(&json).to_string());
+    Ok((res1, res2))
 }
 
 #[cfg(test)]

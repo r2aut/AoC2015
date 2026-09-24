@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/5>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use std::{
     collections::{HashMap, HashSet},
@@ -87,17 +86,12 @@ fn part_two(data: &[String]) -> u32 {
     data.iter().filter(|s| is_nice_2(s)).collect::<Vec<&String>>().len() as u32
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader("puzzles/day05.txt")?;
-    let data = &read_data(reader)?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
+    let data = read_data(reader)?;
 
-    print_day();
-    let res_1 = part_one(data);
-    res_1.aoc_print(P1);
-    let res_2 = part_two(data);
-    res_2.aoc_print(P2);
-
-    Ok(())
+    let res_1 = Some(part_one(&data).to_string());
+    let res_2 = Some(part_two(&data).to_string());
+    Ok((res_1, res_2))
 }
 
 #[cfg(test)]

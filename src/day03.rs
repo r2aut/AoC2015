@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/3>
 
 use anyhow::Result;
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use std::collections::HashSet;
 use std::io::BufRead;
 
@@ -107,21 +106,14 @@ fn part_two(instructions: &str) -> i32 {
     santa.unique_points().union(&robot.unique_points()).count() as i32
 }
 
-fn main() -> Result<()> {
-    let mut reader = get_reader("puzzles/day03.txt")?;
+pub fn solve(mut reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let mut buffer = String::new();
     reader.read_line(&mut buffer)?;
     let instructions = buffer.trim();
 
-    print_day();
-
-    let res_1 = part_one(instructions);
-    res_1.aoc_print(P1);
-
-    let res_2 = part_two(instructions);
-    res_2.aoc_print(P2);
-
-    Ok(())
+    let res_1 = Some(part_one(instructions).to_string());
+    let res_2 = Some(part_two(instructions).to_string());
+    Ok((res_1, res_2))
 }
 
 #[cfg(test)]

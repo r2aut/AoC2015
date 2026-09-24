@@ -3,7 +3,6 @@
 //! <https://adventofcode.com/2015/day/13>
 
 use anyhow::{Result, bail};
-use aoc2015::{AOCPrint, P1, P2, get_reader, print_day};
 use itertools::Itertools;
 use regex::Regex;
 use std::{collections::HashMap, io::BufRead};
@@ -47,20 +46,14 @@ fn calc_best_happiness_change(guests: &Guests) -> i32 {
     *cnt.iter().max().unwrap_or(&0)
 }
 
-fn main() -> Result<()> {
-    let reader = get_reader("puzzles/day13.txt")?;
+pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
     let mut guests = read_guests(reader)?;
-
-    print_day();
-
-    let res1 = calc_best_happiness_change(&guests);
-    res1.aoc_print(P1);
+    let res1 = Some(calc_best_happiness_change(&guests).to_string());
 
     guests.insert("Me".to_string(), HashMap::new());
-    let res2 = calc_best_happiness_change(&guests);
-    res2.aoc_print(P2);
+    let res2 = Some(calc_best_happiness_change(&guests).to_string());
 
-    Ok(())
+    Ok((res1, res2))
 }
 
 #[cfg(test)]

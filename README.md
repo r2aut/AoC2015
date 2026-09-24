@@ -19,6 +19,7 @@ Tasks of the Advent of Code 2015:
 - [Day 11: Corporate Policy](docs/day11.md)
 - [Day 12: JSAbacusFramework.io](docs/day12.md)
 - [Day 13: Knights of the Dinner Table](docs/day13.md)
+- [Day 21: RPG Simulator 20XX](docs/day21.md)
 - [Day 22: Wizard Simulator 20XX](docs/day22.md)
 - [Day 24: It Hangs in the Balance](docs/day24.md)
 - [Day 25: Let It Snow](docs/day25.md)

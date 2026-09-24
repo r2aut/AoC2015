@@ -15,6 +15,7 @@ pub const P1: &str = "Part one = ";
 pub const P2: &str = "Part two = ";
 
 // pub mod day07;
+// pub mod day21;
 // pub mod day22;
 
 pub fn get_reader<P: AsRef<Path>>(path: P) -> Result<impl BufRead> {

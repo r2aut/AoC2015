@@ -16,7 +16,7 @@ mod day10;
 mod day11;
 mod day12;
 mod day13;
-
+mod day19;
 mod day21;
 mod day22;
 mod day23;
@@ -32,6 +32,9 @@ struct Args {
 }
 
 fn main() -> Result<()> {
+    dotenvy::dotenv().ok();
+    env_logger::init();
+
     let args = Args::parse();
     let input_file = args.input.unwrap_or_else(|| PathBuf::from(format!("puzzles/day{:02}.txt", args.day)));
     let file = File::open(input_file)?;
@@ -50,7 +53,7 @@ fn main() -> Result<()> {
         11 => day11::solve(reader)?,
         12 => day12::solve(reader)?,
         13 => day13::solve(reader)?,
-
+        19 => day19::solve(reader)?,
         21 => day21::solve(reader)?,
         22 => day22::solve(reader)?,
         23 => day23::solve(reader)?,

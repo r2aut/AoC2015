@@ -16,6 +16,7 @@ mod day10;
 mod day11;
 mod day12;
 mod day13;
+mod day17;
 mod day18;
 mod day19;
 mod day21;
@@ -55,6 +56,7 @@ fn main() -> Result<()> {
         11 => day11::solve(reader)?,
         12 => day12::solve(reader)?,
         13 => day13::solve(reader)?,
+        17 => day17::solve(reader)?,
         18 => day18::solve(reader)?,
         19 => day19::solve(reader)?,
         21 => day21::solve(reader)?,

@@ -202,7 +202,6 @@ pub fn solve(reader: impl BufRead) -> Result<(Option<String>, Option<String>)> {
 }
 
 #[cfg(test)]
-
 mod test {
     use super::*;
 

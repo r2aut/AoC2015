@@ -22,6 +22,7 @@ Tasks of the Advent of Code 2015:
 - [Day 17: No Such Thing as Too Much](docs/day17.md)
 - [Day 18: Like a GIF For Your Yard](docs/day18.md)
 - [Day 19: Medicine for Rudolph](docs/day19.md)
+- [Day 20: Infinite Elves and Infinite Houses](docs/day20.md)
 - [Day 21: RPG Simulator 20XX](docs/day21.md)
 - [Day 22: Wizard Simulator 20XX](docs/day22.md)
 - [Day 23: Opening the Turing Lock](docs/day23.md)

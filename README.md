@@ -19,6 +19,7 @@ Tasks of the Advent of Code 2015:
 - [Day 11: Corporate Policy](docs/day11.md)
 - [Day 12: JSAbacusFramework.io](docs/day12.md)
 - [Day 13: Knights of the Dinner Table](docs/day13.md)
+- [Day 14: Reindeer Olympics](docs/day14.md)
 - [Day 15: Science for Hungry People](docs/day15.md)
 - [Day 16: Aunt Sue](docs/day16.md)
 - [Day 17: No Such Thing as Too Much](docs/day17.md)
